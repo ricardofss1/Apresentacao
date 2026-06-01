@@ -1,14 +1,131 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <meta charset="utf-8">
-    <title>Apresentação</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apresentação</title>
+
+<style>
+:root {
+    --bg: #0f172a;
+    --panel: rgba(15, 23, 42, 0.9);
+    --accent: #2563eb;
+    --text: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg);
+    overflow: hidden;
+    font-family: Inter, Arial, sans-serif;
+}
+
+.toolbar {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    background: var(--panel);
+    backdrop-filter: blur(10px);
+    padding: 10px;
+    border-radius: 14px;
+    z-index: 1000;
+    box-shadow: 0 8px 24px rgba(0,0,0,.25);
+}
+
+button,
+a.btn {
+    border: none;
+    text-decoration: none;
+    color: white;
+    background: var(--accent);
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: .2s;
+}
+
+button:hover,
+a.btn:hover {
+    transform: translateY(-2px);
+    opacity: .95;
+}
+
+.viewer {
+    width: 100vw;
+    height: 100vh;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.hint {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    color: rgba(255,255,255,.7);
+    font-size: 13px;
+    background: rgba(0,0,0,.3);
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+</style>
 </head>
-<body style="margin:0">
-    <embed
-        src="apresentacao_interleaving.pdf"
-        type="application/pdf"
-        width="100%"
-        height="100vh">
+<body>
+
+<div class="toolbar">
+    <button onclick="toggleFullscreen()">
+        ⛶ Tela Cheia
+    </button>
+
+    <a class="btn" href="apresentacao.pdf" target="_blank">
+        ↗ Abrir PDF
+    </a>
+
+    <button onclick="reloadPdf()">
+        ↻ Recarregar
+    </button>
+</div>
+
+<div class="viewer" id="viewer">
+    <iframe id="pdfFrame" src="apresentacao.pdf#toolbar=0&navpanes=0&scrollbar=0"></iframe>
+</div>
+
+<div class="hint">
+    F11 ou botão "Tela Cheia" para apresentar
+</div>
+
+<script>
+async function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+    } else {
+        await document.exitFullscreen();
+    }
+}
+
+function reloadPdf() {
+    const frame = document.getElementById("pdfFrame");
+    frame.src = frame.src;
+}
+
+document.addEventListener("keydown", (e) => {
+    if (e.key.toLowerCase() === "f") {
+        toggleFullscreen();
+    }
+});
+</script>
+
 </body>
 </html>
